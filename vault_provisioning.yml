@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: yes
+  remote_user: vagrant
+
+  roles:
+    - role: robertdebock.core_dependencies
+    - role: robertdebock.hashicorp
+    - role: robertdebock.vault
+      vault_show_unseal_information: yes
+      vault_store_root_token: yes
+      vault_make_backup: yes
+      vault_api_addr: "http://127.0.0.1:8200"
+      vault_listeners:
+        - name: tcp
+          address: "0.0.0.0:8200"
+          cluster_address: "0.0.0.0:8201"
+          tls_disable: "true"
+          tls_cert_file: "fullchain.pem"
+          tls_key_file: "privkey.pem"
+      vault_key_shares: 3 # Generate a total of 3 unsealing keys
+      vault_key_threshold: 2 # Only required 2/3 of keys to unseal
+      vault_kv_secrets: # Add a test secret
+        - name: test-secret
+          data:
+            username: user 
+            password: S3cret!

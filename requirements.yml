@@ -1,0 +1,4 @@
+# Roles installed via Ansible Galaxy
+- src: robertdebock.core_dependencies
+- src: robertdebock.hashicorp
+- src: robertdebock.vault
